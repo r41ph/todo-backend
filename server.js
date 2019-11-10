@@ -3,8 +3,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const PORT = 3001;
+const todoRoutes = express.Router();
 
 const mongoose = require("mongoose");
+const Todo = require("./todoSchema");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -21,6 +23,20 @@ const connection = mongoose.connection;
 connection.once("open", function() {
   console.log("MongoDB database connection established successfully");
 });
+
+// Fetch all TODOs
+todoRoutes.route("/").get(function(req, res) {
+  Todo.find(function(err, todos) {
+    if (err) {
+      res.json({ error: err });
+      console.log(err);
+    } else {
+      res.json(todos);
+    }
+  });
+});
+
+app.use("/api/todos/", todoRoutes);
 
 app.listen(PORT, function() {
   console.log("Server is running on Port: " + PORT);
