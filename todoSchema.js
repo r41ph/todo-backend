@@ -5,6 +5,7 @@ let Todo = new Schema(
   {
     todo_title: { type: String },
     todo_description: { type: String },
+    todo_duedate: { type: String },
     todo_completed: { type: Boolean }
   },
   { collection: "todos" }
